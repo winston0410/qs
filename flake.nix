@@ -16,10 +16,13 @@
           #!/usr/bin/env bash
           echo "use flake" > ./.envrc
           direnv allow
-          # Handle this in a conditional
-          echo "/.direnv" >> ./.gitignore
+          if test -f "./.gitignore" && ! grep -q ".direnv" "./.gitignore"; then
+              echo "**/.direnv" >> ./.gitignore
+          fi
+          echo "Direnv has been set up!"
         '';
       in {
+        defaultApp = direnv-init;
         apps = {
           direnv = {
             type = "app";
